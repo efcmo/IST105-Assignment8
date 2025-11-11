@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>DHCP Lease Viewer</title>
+    <style>
+        body { font-family: Arial; margin: 40px; }
+        h1 { color: #008080; }
+        table { border-collapse: collapse; width: 60%; margin-top: 20px; }
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        input, select, button { padding: 6px; margin: 4px; }
+    </style>
+</head>
+<body>
+    <h1>DHCP Lease Viewer</h1>
+
+    <form method="POST" action="/">
+        {% csrf_token %}
+        <label>MAC Address:</label>
+        <input type="text" name="mac" placeholder="AA:BB:CC:DD:EE:FF" required>
+        <label>DHCP Version:</label>
+        <select name="dhcp" required>
+            <option value="DHCPv4">DHCPv4</option>
+            <option value="DHCPv6">DHCPv6</option>
+        </select>
+        <button type="submit">Add Lease</button>
+    </form>
+
+    <h2>Current Leases</h2>
+    <table>
+        <tr>
+            <th>MAC Address</th>
+            <th>DHCP Type</th>
+        </tr>
+        {% for lease in leases %}
+        <tr>
+            <td>{{ lease.mac }}</td>
+            <td>{{ lease.dhcp }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="2">No leases found yet.</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
